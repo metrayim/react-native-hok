@@ -21,6 +21,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import {getAllCategoies} from './global'
 
 export default class transaction extends Component {
     state = {
@@ -41,13 +42,20 @@ export default class transaction extends Component {
 
         ]
     }
-
+    componentWillMount(){
+        const results = getAllCategoies()
+        results.then(result => {
+            console.log(result)
+            this.setState({data : result})
+        })
+        
+    }
     render() {
         return (
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignContent: 'center' }}>
                 <ScrollView>
                     <View>
-                        <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: 'red' }}>LIST</Text>
+                        <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: 'red' }}>Transaction</Text>
                     </View>
                     <FlatList
                         horizontal={true}
@@ -55,12 +63,17 @@ export default class transaction extends Component {
                         showsHorizontalScrollIndicator={false}
                         renderItem={({ item }) => (
                             <View style={styles.container}>
+                                <Text>
+                                    {item.name}
+                                </Text>
                                 <View>
-                                    <Image source={{ uri: 'https://i.ytimg.com/vi/MPV2METPeJU/maxresdefault.jpg' }} style={styles.images} />
+                                    <Image source={{ uri: item.image }} style={styles.images} />
+                                    {/* <Image source={{uri: item.image}} style={styles.images}/> */}
                                 </View>
                                 <View>
+                               
                                     <Text style={styles.wrageText}>
-                                        7.4$
+                                        {item.price+'$'}
                          </Text>
                                 </View>
                                 <View>
@@ -92,13 +105,12 @@ const styles = StyleSheet.create({
     container: {
         width: 370,
         height: 550,
-        borderWidth: 1,
         borderRadius: 30,
         flexDirection: 'column',
         alignItems: 'center',
         marginRight: 20,
-        marginLeft: 20
-
+        marginLeft: 20,
+        backgroundColor :'#fff'
 
     },
     images: {
@@ -120,11 +132,12 @@ const styles = StyleSheet.create({
     textInputStyle1: {
         height: 60,
         width: 200,
-        borderWidth: 2,
         borderColor: '#028b53',
         textAlign: 'center',
         fontSize: 20,
-        marginTop: 20
+        marginTop: 20,
+        backgroundColor: '#ededed',
+        borderRadius: 100
 
     },
     wrageText: {
@@ -132,8 +145,9 @@ const styles = StyleSheet.create({
         fontSize: 30
     },
     buttonText: {
-        color: 'black',
+        color: '#ededed',
         textAlign: 'center',
-        fontSize: 20
+        fontSize: 20,
+        
     },
 })

@@ -17,6 +17,8 @@
 // }
 import React, { Component } from 'react';
 import { View, Text, SafeAreaView, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import {getTodayRecord} from './global'
+import { ThemeConsumer } from 'react-native-elements';
 class history extends Component {
     state = {
         data: [
@@ -43,6 +45,16 @@ class history extends Component {
 
         ]
     }
+    componentWillMount(){
+         const result = getTodayRecord();
+         result.then(_data => {
+                this.setState({
+                    data : _data
+                })
+                    console.log(`im working from historuy`)
+                    console.log(_data)
+                })
+    }
     render() {
         return (
             <SafeAreaView>
@@ -62,8 +74,8 @@ class history extends Component {
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row' }}>
                                 <View style={styles.textTable}><Text >{item.id}</Text></View>
-                                <View style={styles.textTable}><Text>{item.name}</Text></View>
-                                <View style={styles.textTable}><Text>{item.amount}</Text></View>
+                                <View style={styles.textTable}><Text>{item.category_name}</Text></View>
+                                <View style={styles.textTable}><Text>{item.service_amount}</Text></View>
                                 <TouchableOpacity onPress={() => { alert('hello') }} activeOpacity={0.7} style={styles.button} >
                                     <Text style={styles.buttonText}> Remove </Text>
                                 </TouchableOpacity>
@@ -82,11 +94,10 @@ export default history;
 
 const styles = StyleSheet.create({
     tableContainer: {
-        borderWidth: 1,
         borderRadius: 20,
         flexDirection: 'column',
         justifyContent: 'center',
-
+        backgroundColor: '#fff'
     },
     header:{ 
         fontSize: 50, height: 100, textAlign: "center", color: 'red' 
@@ -94,7 +105,6 @@ const styles = StyleSheet.create({
     button: {
         width: '20%',
         height: 30,
-        borderWidth: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',

@@ -28,7 +28,7 @@
 import React, { Component } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, FlatList, TouchableOpacity, } from 'react-native';
 import DatePicker from 'react-native-datepicker'
-
+import {getReportDuring} from './global'
 export default class report extends Component {
   state = {
     startDate: null,
@@ -57,7 +57,24 @@ export default class report extends Component {
 
     ]
   }
-
+  componentWillMount(){
+    const myDate = new Date()
+        const start = myDate.toISOString().split('T')[0]
+    
+        const result = getReportDuring("2020-04-20" , start)
+    
+        result.then(_data => {
+            this.setState({
+              startDate: null,
+              endDate: null,
+              data : _data
+            })
+            console.log(data)
+        }).catch(err=> {
+          console.log(`data not found`)
+            console.log(err)
+        })
+  }
   render() {
     return (
       <View style={{ flexDirection: 'column', alignItems: 'center' }}>
@@ -130,9 +147,9 @@ export default class report extends Component {
             data={this.state.data}
             renderItem={({ item }) => (
               <View style={{ flexDirection: 'row' }}>
-                <View style={styles.textTable}><Text >{item.id}</Text></View>
+                <View style={styles.textTable}><Text >{item.categoryId}</Text></View>
                 <View style={styles.textTable}><Text>{item.name}</Text></View>
-                <View style={styles.textTable}><Text>{item.amount}</Text></View>
+                <View style={styles.textTable}><Text>{item.service_amount}</Text></View>
                 <TouchableOpacity onPress={() => { alert('hello') }} activeOpacity={0.7} style={styles.button} >
                   <Text style={styles.buttonText}> Remove </Text>
                 </TouchableOpacity>
@@ -150,11 +167,11 @@ export default class report extends Component {
 
 const styles = StyleSheet.create({
   tableContainer: {
-    borderWidth: 1,
     borderRadius: 20,
     flexDirection: 'column',
     justifyContent: 'center',
-    marginTop: 30
+    marginTop: 30,
+    backgroundColor:"#fff"
 
   },
   header: {
@@ -163,7 +180,6 @@ const styles = StyleSheet.create({
   button: {
     width: '20%',
     height: 30,
-    borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -176,7 +192,6 @@ const styles = StyleSheet.create({
   {
     width: '35%',
     height: 40,
-    borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

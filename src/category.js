@@ -1,14 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component ,useRef } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TextInput, Image } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-class category extends Component {
-  state = {
-    avatarSource: '',
+const category = () => {
+ 
+  let name = useRef(null);
+  let image = useRef(null);
+  let price = useRef(null)
+  const yourFunction = () => {
+    console.log('this your hahaha')
+    let _name = name.current.textInput
+    console.log(_name)
   }
-  yourFunction = () => {
-    console.log('this your function')
-  }
-  options = {
+  const options = {
     title: 'Select Avatar',
     customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
     storageOptions: {
@@ -16,7 +19,7 @@ class category extends Component {
       path: 'images',
     },
   };
-  getImage = () => {
+  const getImage = () => {
     ImagePicker.showImagePicker(this.options, (response) => {
       console.log('Response = ', response);
 
@@ -39,17 +42,17 @@ class category extends Component {
     });
   }
 
-  render() {
-    console.log(this.state.avatarSource, "this your image")
-    const { avatarSource } = this.state;
-    const image = avatarSource ? avatarSource : { uri: 'https://techcrunch.com/wp-content/uploads/2010/07/github-logo.png?w=512' }
+  
+    // console.log(this.state.avatarSource, "this your image")
+    // const { avatarSource } = this.state;
+    // const image = avatarSource ? avatarSource : { uri: 'https://techcrunch.com/wp-content/uploads/2010/07/github-logo.png?w=512' }
     return (
       <View style={{flexDirection:'column',alignItems:'center'}}>
         <View>
           <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: 'red' }}>Category</Text>
         </View>
         <View>
-          <TextInput
+          <TextInput ref={name}
             style={styles.textInputStyle1}
             placeholder="Name"
           />
@@ -60,20 +63,20 @@ class category extends Component {
             placeholder="Prece"
           />
         </View>
-        <TouchableOpacity onPress={() => { this.getImage() }} style={{ justifyContent: "center", flexDirection: 'row', marginTop: 30 }}>
-        <Text style={styles.buttonText,{color:'red'}}> Upload Image</Text>
-        </TouchableOpacity>
-        <View style={{flexDirection:'row',justifyContent:'center'}}>
-        <Image source={image} style={{ width: 200, height: 200 }} />
+   
+        <View>
+          <TextInput 
+          style={styles.textInputStyle1}
+            placeholder="Image Url"/>
         </View>
         
-        <TouchableOpacity onPress={() => { this.yourFunction() }} activeOpacity={0.7} style={styles.button} >
+        <TouchableOpacity onPress={() => { yourFunction() }} activeOpacity={0.7} style={styles.button} >
           <Text style={styles.buttonText}> Save</Text>
         </TouchableOpacity>
       </View>
     );
   }
-}
+
 export default category
 
 
@@ -85,8 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     flexDirection:'row',
     justifyContent:'center',
-    alignItems:'center'
-    
+    alignItems:'center',
   },
   textInputStyle1: {
     height: 60,
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
     
   },
   buttonText: {
-    color: 'black',
+    color: '#ededed',
     textAlign: 'center',
     fontSize:20
   },
