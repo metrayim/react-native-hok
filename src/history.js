@@ -17,7 +17,7 @@
 // }
 import React, { Component } from 'react';
 import { View, Text, SafeAreaView, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import {getTodayRecord} from './global'
+import {getTodayRecord,removeRecord} from './global'
 import { ThemeConsumer } from 'react-native-elements';
 class history extends Component {
     state = {
@@ -51,22 +51,35 @@ class history extends Component {
                 this.setState({
                     data : _data
                 })
-                    console.log(`im working from historuy`)
-                    console.log(_data)
+          })
+    }
+    toRemove  = (id ) =>  {
+        const result =  removeRecord(id);
+        result.then(res => {
+            if(res.status == true ){
+                const result = getTodayRecord();
+                result.then(_data => {
+                        this.setState({
+                            data : _data
+                        })
                 })
+            }
+        } ).catch(err => {
+            console.log(err)
+        })
     }
     render() {
         return (
             <SafeAreaView>
                 <View>
-                    <Text style={styles.header}>Today</Text>
+                    <Text style={styles.header}>Today History</Text>
                 </View>
                 <View style={styles.tableContainer}>
                     <View style={{ flexDirection: 'row' }}>
-                        <View style={styles.textHeader}><Text style={styles.textStyle}>ID</Text></View>
+                        <View style={styles.textHeader}><Text style={styles.textStyle}>#</Text></View>
                         <View style={styles.textHeader}><Text style={styles.textStyle}>Name</Text></View>
                         <View style={styles.textHeader}><Text style={styles.textStyle}>Amount</Text></View>
-                        <View style={styles.textHeader}><Text style={styles.textStyle}>Remove</Text></View>
+                        <View style={styles.textHeader}><Text style={styles.textStyle}>Action</Text></View>
 
                     </View>
                     <FlatList
@@ -76,8 +89,8 @@ class history extends Component {
                                 <View style={styles.textTable}><Text >{item.id}</Text></View>
                                 <View style={styles.textTable}><Text>{item.category_name}</Text></View>
                                 <View style={styles.textTable}><Text>{item.service_amount}</Text></View>
-                                <TouchableOpacity onPress={() => { alert('hello') }} activeOpacity={0.7} style={styles.button} >
-                                    <Text style={styles.buttonText}> Remove </Text>
+                                <TouchableOpacity onPress={() => { this.toRemove(item.id) }} activeOpacity={0.7} style={styles.button} >
+                                    <Text style={styles.buttonText}> clear </Text>
                                 </TouchableOpacity>
                             </View>
                         )}
@@ -103,18 +116,19 @@ const styles = StyleSheet.create({
         fontSize: 50, height: 100, textAlign: "center", color: 'red' 
     },
     button: {
-        width: '20%',
+        width: '17%',
         height: 30,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 30,
         marginTop: 13,
-        backgroundColor: 'red'
-
+        // backgroundColor: 'red'
+        borderWidth : 0.5,
+        borderColor: '#393939'
     },
     buttonText: {
-        color: 'white',
+        color: '#393939',
         textAlign: 'center',
     },
     textTable: {

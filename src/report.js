@@ -57,39 +57,63 @@ export default class report extends Component {
 
     ]
   }
+  searchByDate(){
+    
+    const result = getReportDuring(this.state.startDate, this.state.endDate)
+    
+    result.then(_data => {
+        let _total = 0
+        _data.forEach(({total_price} )=> {
+          _total += total_price
+        });
+        this.setState({
+          data : _data,
+          total : _total
+        })
+     
+    }).catch(err=> {
+        console.log(err)
+    })
+
+    console.log(this.state)
+  }
   componentWillMount(){
-    const myDate = new Date()
+        let myDate = new Date()
         const start = myDate.toISOString().split('T')[0]
-    
-        const result = getReportDuring("2020-04-20" , start)
-    
+        myDate.setDate(myDate.getDate() + 1)
+        const end = myDate.toISOString().split('T')[0]
+        const result = getReportDuring(start, end)
+        
         result.then(_data => {
+          let _total = 0
+          _data.forEach(({total_price} )=> {
+            _total += total_price
+          });
             this.setState({
-              startDate: null,
-              endDate: null,
-              data : _data
+              startDate : start,
+              endDate : end,
+              data : _data,
+              total : _total
             })
-            console.log(data)
+         
         }).catch(err=> {
-          console.log(`data not found`)
             console.log(err)
         })
+        
   }
   render() {
     return (
       <View style={{ flexDirection: 'column', alignItems: 'center' }}>
         <View>
-          <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: 'red' }}>Transaction</Text>
+          <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: 'red' }}>Income Report</Text>
         </View>
         <View style={{ flexDirection: 'row' }}>
           <DatePicker
             style={{ width: 200 }}
             date={this.state.startDate}
             mode="date"
-            placeholder="Start Date"
+            // placeholder="Start Date"
             format="YYYY-MM-DD"
-            minDate="2016-05-01"
-            maxDate="2016-06-01"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             customStyles={{
@@ -100,7 +124,8 @@ export default class report extends Component {
                 marginLeft: 0
               },
               dateInput: {
-                marginLeft: 36
+                marginLeft: 36,
+                borderRadius : 100
               }
               // ... You can check the source to find the other keys.
             }}
@@ -110,10 +135,7 @@ export default class report extends Component {
             style={{ width: 200 }}
             date={this.state.endDate}
             mode="date"
-            placeholder="End Date"
             format="YYYY-MM-DD"
-            minDate="2016-05-01"
-            maxDate="2016-06-01"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             customStyles={{
@@ -124,37 +146,45 @@ export default class report extends Component {
                 marginLeft: 0
               },
               dateInput: {
-                marginLeft: 36
+                marginLeft: 36,
+                borderRadius : 100
               }
               // ... You can check the source to find the other keys.
             }}
             onDateChange={(date) => { this.setState({ endDate: date }) }}
           />
         </View>
-        <TouchableOpacity onPress={() => { alert('search') }} activeOpacity={0.7} style={styles.buttonSearch} >
+        <TouchableOpacity onPress={()=> {this.searchByDate()}} activeOpacity={0.7} style={styles.buttonSearch} >
           <Text style={styles.buttonText}> Search</Text>
         </TouchableOpacity>
 
         <View style={styles.tableContainer}>
           <View style={{ flexDirection: 'row' }}>
-            <View style={styles.textHeader}><Text style={styles.textStyle}>ID</Text></View>
             <View style={styles.textHeader}><Text style={styles.textStyle}>Name</Text></View>
             <View style={styles.textHeader}><Text style={styles.textStyle}>Amount</Text></View>
-            <View style={styles.textHeader}><Text style={styles.textStyle}>Remove</Text></View>
-
+            <View style={styles.textHeader}><Text style={styles.textStyle}>Income</Text></View>
+            <View style={styles.textHeader}><Text style={styles.textStyle}>Total</Text></View>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={styles.textHeader}><Text style={styles.textStyle}></Text></View>
+            <View style={styles.textHeader}><Text style={styles.textStyle}></Text></View>
+            <View style={styles.textHeader}><Text style={styles.textStyle}></Text></View>
+          <View style={styles.textHeader}><Text style={styles.textStyle}>{this.state.total}</Text></View>
           </View>
           <FlatList
             data={this.state.data}
-            renderItem={({ item }) => (
-              <View style={{ flexDirection: 'row' }}>
-                <View style={styles.textTable}><Text >{item.categoryId}</Text></View>
-                <View style={styles.textTable}><Text>{item.name}</Text></View>
-                <View style={styles.textTable}><Text>{item.service_amount}</Text></View>
-                <TouchableOpacity onPress={() => { alert('hello') }} activeOpacity={0.7} style={styles.button} >
-                  <Text style={styles.buttonText}> Remove </Text>
-                </TouchableOpacity>
-              </View>
-            )}
+            renderItem={({ item }) => {
+             
+              return (
+                <View style={{ flexDirection: 'row' }}>
+                  
+                  <View style={styles.textTable}><Text>{item.name}</Text></View>
+                  <View style={styles.textTable}><Text>{item.service_amount}</Text></View>
+                  <View style={styles.textTable}><Text >{item.total_price}</Text></View>
+                  <View style={styles.textHeader}><Text>{this.total}</Text></View>
+                </View>
+              )
+            }}
             keyExtractor={item => item.id}
           />
         </View>

@@ -36,7 +36,7 @@ TodayScreen = () => {
 }
 NewScreen = () => {
   return (
-    <View style={{ width: "100%", height: "100%", flexDirection: "column", justifyContent: 'center' }}>
+    <View style={{ width: "100%", height: "100%", flexDirection: "column",marginTop: 100 }}>
       <Category />
     </View>
   );
@@ -46,6 +46,8 @@ NewScreen = () => {
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+
   return (
     <NavigationContainer>
       <Tab.Navigator

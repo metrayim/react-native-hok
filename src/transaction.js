@@ -21,10 +21,11 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import {getAllCategoies} from './global'
+import {getAllCategoies,saveRecord} from './global'
 
 export default class transaction extends Component {
     state = {
+        
         data: [
             {
                 id: 1,
@@ -50,12 +51,26 @@ export default class transaction extends Component {
         })
         
     }
+
+    yourFunction(object){
+       
+        console.log(object)
+        const record = {
+            category : {
+               id: object.id , 
+               price : object.price
+            },
+            service_amount : parseInt(object.amount == undefined ? "0" : object.amount),
+        }
+
+        saveRecord(record)
+    }
     render() {
         return (
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignContent: 'center' }}>
                 <ScrollView>
                     <View>
-                        <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: 'red' }}>Transaction</Text>
+                        <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: 'red' }}>Income Saving</Text>
                     </View>
                     <FlatList
                         horizontal={true}
@@ -63,27 +78,33 @@ export default class transaction extends Component {
                         showsHorizontalScrollIndicator={false}
                         renderItem={({ item }) => (
                             <View style={styles.container}>
-                                <Text>
-                                    {item.name}
-                                </Text>
+                               <View>
+                                    <Text >
+                                        {item.name}
+                                       
+                                    </Text>
+                                    
+                               </View>
                                 <View>
                                     <Image source={{ uri: item.image }} style={styles.images} />
                                     {/* <Image source={{uri: item.image}} style={styles.images}/> */}
                                 </View>
                                 <View>
                                
-                                    <Text style={styles.wrageText}>
+                                <Text >
                                         {item.price+'$'}
-                         </Text>
+                                    </Text> 
                                 </View>
                                 <View>
+                                
                                     <TextInput
                                         style={styles.textInputStyle1}
-                                        placeholder="Prece"
+                                        value='1'
+                                        onChangeText={val => {item.amount = val}}
                                     />
                                 </View>
-                                <TouchableOpacity onPress={() => { this.yourFunction() }} activeOpacity={0.7} style={styles.button} >
-                                    <Text style={styles.buttonText}> Save</Text>
+                                <TouchableOpacity onPress={() => { this.yourFunction({id : item.id, price : item.price,amount : item.amount}) }} activeOpacity={0.7} style={styles.button} >
+                                    <Text style={styles.buttonText}> Push</Text>
                                 </TouchableOpacity>
 
                             </View>
@@ -116,7 +137,7 @@ const styles = StyleSheet.create({
     images: {
         width: 368,
         height: 350,
-        borderRadius: 30
+        // borderRadius: 30
     },
     button: {
         width: '30%',
@@ -147,7 +168,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#ededed',
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: 15,
         
     },
 })

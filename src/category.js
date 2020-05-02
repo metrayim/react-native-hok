@@ -1,17 +1,37 @@
 import React, { Component ,useRef } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, TextInput, Image } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-const category = () => {
- 
-  let name = useRef(null);
-  let image = useRef(null);
-  let price = useRef(null)
-  const yourFunction = () => {
-    console.log('this your hahaha')
-    let _name = name.current.textInput
-    console.log(_name)
+import {uploadCategory } from './global'
+class category extends Component {
+  state = {
+   name :'',
+   price : '',
+   image : ''
   }
-  const options = {
+
+  yourFunction = () => {
+    const object = this.state;
+    console.log('this your hahaha')
+    console.log(this.state)
+    let category  = {
+      name : object.name,
+      image : object.image,
+      price :  object.price ==  null ? 0 : parseFloat(object.price)
+  }
+  const result =  uploadCategory(category)
+
+    
+  result.then(_category =>{
+      /**
+       * _category property was set in uploadCategory
+       */
+          console.log(_category)
+          // addNewCategory(_category)
+      
+      
+  })
+}
+  options = {
     title: 'Select Avatar',
     customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
     storageOptions: {
@@ -19,68 +39,67 @@ const category = () => {
       path: 'images',
     },
   };
-  const getImage = () => {
-    ImagePicker.showImagePicker(this.options, (response) => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const source = { uri: response.uri };
-
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-        this.setState({
-          avatarSource: source,
-        });
-      }
-    });
-  }
+ 
 
   
     // console.log(this.state.avatarSource, "this your image")
     // const { avatarSource } = this.state;
     // const image = avatarSource ? avatarSource : { uri: 'https://techcrunch.com/wp-content/uploads/2010/07/github-logo.png?w=512' }
+  render(){
     return (
-      <View style={{flexDirection:'column',alignItems:'center'}}>
-        <View>
-          <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: 'red' }}>Category</Text>
-        </View>
-        <View>
-          <TextInput ref={name}
-            style={styles.textInputStyle1}
-            placeholder="Name"
-          />
-        </View>
-        <View>
-          <TextInput
-            style={styles.textInputStyle1}
-            placeholder="Prece"
-          />
-        </View>
-   
-        <View>
-          <TextInput 
-          style={styles.textInputStyle1}
-            placeholder="Image Url"/>
-        </View>
+      <View>
+
+          <View>
+              <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: 'red' }}>Category</Text>
+            </View>
+            
+          <View style={styles.category_container}>
+            
+            <View>
+              <TextInput ref={name}
+                style={styles.textInputStyle1}
+                placeholder="Name"
+                onChangeText={text => this.setState({name : text})}
+              />
+            </View>
+            <View>
+              <TextInput
+                style={styles.textInputStyle1}
+                placeholder="Price"
+                onChangeText={text => this.setState({price : text})}
+              />
+            </View>
+      
+            <View>
+              <TextInput 
+              style={styles.textInputStyle1}
+                placeholder="Image Url"
+                onChangeText={text => this.setState({image : text})}
+                />
+            </View>
+            
+            <TouchableOpacity onPress={() => { this.yourFunction() }} activeOpacity={0.7} style={styles.button} >
+              <Text style={styles.buttonText}> Save</Text>
+            </TouchableOpacity>
+          </View>
         
-        <TouchableOpacity onPress={() => { yourFunction() }} activeOpacity={0.7} style={styles.button} >
-          <Text style={styles.buttonText}> Save</Text>
-        </TouchableOpacity>
       </View>
     );
   }
+}
 
 export default category
 
 
 const styles = StyleSheet.create({
+  category_container: {
+    flexDirection:'column',
+    alignItems:'center',
+    backgroundColor: 'white' ,
+     borderRadius :30,
+     margin: 10,
+     paddingBottom : 20
+    },
   button: {
     width: '90%',
     height: 60,
