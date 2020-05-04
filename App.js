@@ -11,7 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 InsertScreen = () => {
   return (
     <SafeAreaView>
-      <View>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 40 }}>
         <Transaction />
       </View>
     </SafeAreaView>
@@ -21,9 +21,11 @@ InsertScreen = () => {
 
 ReportScreen = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView >
+      <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 40 }}>
+        <Report />
+      </View>
       
-      <Report />
     </SafeAreaView>
   );
 }

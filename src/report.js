@@ -105,7 +105,7 @@ export default class report extends Component {
     return (
       <View style={{ flexDirection: 'column', alignItems: 'center' }}>
         <View>
-          <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: 'red' }}>Income Report</Text>
+          <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: '#393939' }}>Income Report</Text>
         </View>
         <View style={{ flexDirection: 'row' }}>
           <DatePicker

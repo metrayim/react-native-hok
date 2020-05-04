@@ -11,25 +11,29 @@ class category extends Component {
 
   yourFunction = () => {
     const object = this.state;
-    console.log('this your hahaha')
     console.log(this.state)
-    let category  = {
-      name : object.name,
-      image : object.image,
-      price :  object.price ==  null ? 0 : parseFloat(object.price)
-  }
-  const result =  uploadCategory(category)
+      let category  = {
+        name : object.name,
+        image : object.image,
+        price :  object.price ==  null ? 0 : parseFloat(object.price)
+    }
+    const result =  uploadCategory(category)
 
-    
-  result.then(_category =>{
-      /**
-       * _category property was set in uploadCategory
-       */
-          console.log(_category)
-          // addNewCategory(_category)
       
-      
-  })
+    result.then(_category =>{
+        /**
+         * _category property was set in uploadCategory
+         */
+            console.log(_category)
+            this.setState({
+              name :'',
+              price : '',
+              image : ''
+            })
+            // addNewCategory(_category)
+        
+        
+    })
 }
   options = {
     title: 'Select Avatar',
@@ -50,15 +54,16 @@ class category extends Component {
       <View>
 
           <View>
-              <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: 'red' }}>Category</Text>
+              <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: '#393939' }}>Category</Text>
             </View>
             
           <View style={styles.category_container}>
             
             <View>
-              <TextInput ref={name}
+              <TextInput 
                 style={styles.textInputStyle1}
                 placeholder="Name"
+                value={this.state.name}
                 onChangeText={text => this.setState({name : text})}
               />
             </View>
@@ -66,6 +71,7 @@ class category extends Component {
               <TextInput
                 style={styles.textInputStyle1}
                 placeholder="Price"
+                value={this.state.price}
                 onChangeText={text => this.setState({price : text})}
               />
             </View>
@@ -74,6 +80,7 @@ class category extends Component {
               <TextInput 
               style={styles.textInputStyle1}
                 placeholder="Image Url"
+                value={this.state.image}
                 onChangeText={text => this.setState({image : text})}
                 />
             </View>

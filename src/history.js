@@ -45,8 +45,20 @@ class history extends Component {
 
         ]
     }
+    
+
     componentWillMount(){
          const result = getTodayRecord();
+         result.then(_data => {
+                this.setState({
+                    data : _data
+                })
+          })
+    }
+
+
+    refreshComponent =() => {
+        const result = getTodayRecord();
          result.then(_data => {
                 this.setState({
                     data : _data
@@ -72,9 +84,12 @@ class history extends Component {
         return (
             <SafeAreaView>
                 <View>
-                    <Text style={styles.header}>Today History</Text>
+                    <TouchableOpacity onPress={() => { this.refreshComponent() }} activeOpacity={0.7}  >
+                        <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: '#393939' }}>Today History</Text>
+                    </TouchableOpacity>   
                 </View>
                 <View style={styles.tableContainer}>
+                    
                     <View style={{ flexDirection: 'row' }}>
                         <View style={styles.textHeader}><Text style={styles.textStyle}>#</Text></View>
                         <View style={styles.textHeader}><Text style={styles.textStyle}>Name</Text></View>
@@ -111,9 +126,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         backgroundColor: '#fff'
-    },
+        },
     header:{ 
-        fontSize: 50, height: 100, textAlign: "center", color: 'red' 
+        fontSize: 50, height: 100, textAlign: "center", color: '#393939' 
     },
     button: {
         width: '17%',

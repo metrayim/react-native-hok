@@ -51,7 +51,13 @@ export default class transaction extends Component {
         })
         
     }
-
+    refreshCategory(){
+        const results = getAllCategoies()
+        results.then(result => {
+            console.log(result)
+            this.setState({data : result})
+        })
+    }
     yourFunction(object){
        
         console.log(object)
@@ -63,15 +69,25 @@ export default class transaction extends Component {
             service_amount : parseInt(object.amount == undefined ? "0" : object.amount),
         }
 
-        saveRecord(record)
+        const result =  saveRecord(record)
+        /**
+         * refresh redux
+         */
+        // result.then(data => {
+        //     console.log(data)
+        // }).catch(err => {
+        //     console.log(err)
+        // })
     }
     render() {
         return (
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignContent: 'center' }}>
                 <ScrollView>
                     <View>
-                        <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: 'red' }}>Income Saving</Text>
-                    </View>
+                        <TouchableOpacity onPress={() => { this.refreshCategory() }} activeOpacity={0.7}  >
+                            <Text style={{ fontSize: 50, height: 100, textAlign: "center", color: '#393939' }}>Operation</Text>
+                        </TouchableOpacity>   
+                     </View>
                     <FlatList
                         horizontal={true}
                         data={this.state.data}
@@ -99,7 +115,6 @@ export default class transaction extends Component {
                                 
                                     <TextInput
                                         style={styles.textInputStyle1}
-                                        value='1'
                                         onChangeText={val => {item.amount = val}}
                                     />
                                 </View>
@@ -171,4 +186,10 @@ const styles = StyleSheet.create({
         fontSize: 15,
         
     },
+    buttonText1: {
+        // color: '#ededed',
+         textAlign: 'center',
+        fontSize: 20,
+        
+    }
 })
