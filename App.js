@@ -48,7 +48,7 @@ NewScreen = () => {
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+  console.disableYellowBox = true;
 
   return (
     <NavigationContainer>
@@ -66,6 +66,7 @@ export default function App() {
             }
             else if (route.name === 'Today') {
               iconName = focused ? 'md-folder' : 'md-folder';
+              
             }
             else if (route.name === 'New') {
               iconName = focused ? 'ios-browsers' : 'ios-browsers'
@@ -80,9 +81,9 @@ export default function App() {
           inactiveTintColor: 'gray',
         }}
       >
-        <Tab.Screen name="Insert" component={InsertScreen} />
+        <Tab.Screen name="Insert" component={InsertScreen} resetOnBlur={true} />
         <Tab.Screen name="Report" component={ReportScreen} />
-        <Tab.Screen name="Today" component={TodayScreen} />
+        <Tab.Screen name="Today" component={History} resetOnBlur={true}/>
         <Tab.Screen name="New" component={NewScreen} />
       </Tab.Navigator>
     </NavigationContainer>

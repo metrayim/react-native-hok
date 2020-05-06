@@ -26,24 +26,9 @@ import {getAllCategoies,saveRecord} from './global'
 export default class transaction extends Component {
     state = {
         
-        data: [
-            {
-                id: 1,
-            },
-            {
-                id: 2,
-            },
-            {
-                id: 3,
-
-            },
-            {
-                id: 4,
-            },
-
-        ]
+        data: []
     }
-    componentWillMount(){
+    componentDidMount(){
         const results = getAllCategoies()
         results.then(result => {
             console.log(result)

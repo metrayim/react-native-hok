@@ -21,29 +21,7 @@ import {getTodayRecord,removeRecord} from './global'
 import { ThemeConsumer } from 'react-native-elements';
 class history extends Component {
     state = {
-        data: [
-            {
-                id: 1,
-                name: 'car',
-                amount: 100,
-            },
-            {
-                id: 2,
-                name: 'Car',
-                amount: 100,
-            },
-            {
-                id: 3,
-                name: 'Car',
-                amount: 100,
-            },
-            {
-                id: 4,
-                name: 'Car',
-                amount: 100,
-            },
-
-        ]
+        data: []
     }
     
 
@@ -54,9 +32,8 @@ class history extends Component {
                     data : _data
                 })
           })
+          this.forceUpdate()
     }
-
-
     refreshComponent =() => {
         const result = getTodayRecord();
          result.then(_data => {
